@@ -21,12 +21,11 @@ void main() async {
     ]);
   }
 
-  // runApp(FutureProvider<ShaderData?>(
-  //   create: (_) => loadShader(),
-  //   initialData: null,
-  //   child: const MyApp(),
-  // ));
-  runApp(const MyApp());
+  runApp(FutureProvider<ShaderData?>(
+    create: (_) => loadShader(),
+    initialData: null,
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

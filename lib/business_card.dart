@@ -67,7 +67,21 @@ class _BusinessCardState extends State<BusinessCard> {
                       ],
                     ),
                   ),
-                  // TODO: shader
+                  Positioned.fill(
+                    child: Consumer<ShaderData?>(
+                      builder: (content, data, _) {
+                        if (data == null) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        return CustomPaint(
+                          painter: _LogoPainter(data.fragmentShader, data.image),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -76,4 +90,27 @@ class _BusinessCardState extends State<BusinessCard> {
       ),
     );
   }
+}
+
+class _LogoPainter extends CustomPainter {
+  _LogoPainter(this.shader, this.image);
+
+  final ui.FragmentShader shader;
+  final ui.Image image;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    shader
+      ..setFloat(0, size.width)
+      ..setFloat(1, size.height)
+      ..setImageSampler(0, image);
+
+    canvas.drawRect(
+      Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+      Paint()..shader = shader,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
