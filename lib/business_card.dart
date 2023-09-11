@@ -77,7 +77,7 @@ class _BusinessCardState extends State<BusinessCard> {
                         }
 
                         return CustomPaint(
-                          painter: _LogoPainter(data.fragmentShader, data.image),
+                          painter: _LogoPainter(data.fragmentShader, data.image, _mousePosition),
                         );
                       },
                     ),
@@ -93,16 +93,18 @@ class _BusinessCardState extends State<BusinessCard> {
 }
 
 class _LogoPainter extends CustomPainter {
-  _LogoPainter(this.shader, this.image);
+  _LogoPainter(this.shader, this.image, this.mousePosition);
 
   final ui.FragmentShader shader;
   final ui.Image image;
+  final double mousePosition;
 
   @override
   void paint(Canvas canvas, Size size) {
     shader
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
+      ..setFloat(2, mousePosition)
       ..setImageSampler(0, image);
 
     canvas.drawRect(
